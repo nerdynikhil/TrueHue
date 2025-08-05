@@ -12,142 +12,107 @@ struct ChronoModeView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        ZStack {
-            // Liquid Glass Background
-            LiquidGlassBackground()
-            
-            VStack(spacing: 40) {
-                // Header with Timer and Score
-                HStack {
-                    Button(action: {
-                        gameManager.resetGame()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(.ultraThinMaterial)
-                                .frame(width: 44, height: 44)
-                                .blur(radius: 0.5)
-                            
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 24))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    // Timer Display with Liquid Glass
-                    VStack(spacing: 4) {
-                        Text("Time")
-                            .font(.system(size: 14, weight: .medium, design: .rounded))
-                            .foregroundStyle(.secondary)
-                        
-                        Text("\(gameManager.timeRemaining)")
-                            .font(.system(size: 36, weight: .bold, design: .rounded))
-                            .foregroundStyle(timerColor)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(.ultraThinMaterial)
-                            .blur(radius: 0.5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(.quaternary, lineWidth: 0.5)
-                            )
-                    )
-                    
-                    Spacer()
-                    
-                    // Score Display with Liquid Glass
-                    VStack(spacing: 4) {
-                        Text("Score")
-                            .font(.system(size: 14, weight: .medium, design: .rounded))
-                            .foregroundStyle(.secondary)
-                        
-                        Text("\(gameManager.currentScore)")
-                            .font(.system(size: 36, weight: .bold, design: .rounded))
-                            .foregroundStyle(.primary)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(.ultraThinMaterial)
-                            .blur(radius: 0.5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(.quaternary, lineWidth: 0.5)
-                            )
-                    )
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 20)
-                
-                Spacer()
-                
-                // Color Name Display with Liquid Glass
-                VStack(spacing: 24) {
-                    Text(gameManager.currentColorName)
-                        .font(.system(size: 52, weight: .bold, design: .rounded))
-                        .foregroundStyle(gameManager.currentDisplayColor)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(.ultraThinMaterial)
-                                .blur(radius: 0.5)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 24)
-                                        .stroke(.quaternary, lineWidth: 0.5)
-                                )
-                        )
-                    
-                    // Color Preview with Liquid Glass
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(gameManager.currentDisplayColor)
-                            .frame(width: 140, height: 140)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24)
-                                    .stroke(.quaternary, lineWidth: 1)
-                            )
-                            .shadow(color: gameManager.currentDisplayColor.opacity(0.3), radius: 20, x: 0, y: 10)
-                        
-                        // Glass overlay
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(.ultraThinMaterial)
-                            .frame(width: 140, height: 140)
-                            .opacity(0.1)
-                    }
+        VStack(spacing: 40) {
+            // Header with Timer and Score
+            HStack {
+                Button(action: {
+                    gameManager.resetGame()
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.secondary)
                 }
                 
                 Spacer()
                 
-                // Action Buttons with Liquid Glass
-                VStack(spacing: 20) {
-                    LiquidGlassActionButton(
-                        title: "Match ✅",
-                        icon: "checkmark.circle.fill",
-                        color: .green
-                    ) {
-                        gameManager.checkAnswer(userThinksMatch: true)
-                    }
+                // Timer Display
+                VStack(spacing: 4) {
+                    Text("Time")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
                     
-                    LiquidGlassActionButton(
-                        title: "No Match ❌",
-                        icon: "xmark.circle.fill",
-                        color: .red
-                    ) {
-                        gameManager.checkAnswer(userThinksMatch: false)
-                    }
+                    Text("\(gameManager.timeRemaining)")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundColor(timerColor)
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 40)
+                
+                Spacer()
+                
+                // Score Display
+                VStack(spacing: 4) {
+                    Text("Score")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
+                    
+                    Text("\(gameManager.currentScore)")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                }
             }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+            
+            Spacer()
+            
+            // Color Name Display
+            VStack(spacing: 20) {
+                Text(gameManager.currentColorName)
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .foregroundColor(gameManager.currentDisplayColor)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 20)
+                
+                // Color Preview
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(gameManager.currentDisplayColor)
+                    .frame(width: 120, height: 120)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color(.systemGray4), lineWidth: 2)
+                    )
+            }
+            
+            Spacer()
+            
+            // Action Buttons
+            VStack(spacing: 16) {
+                Button(action: {
+                    gameManager.checkAnswer(userThinksMatch: true)
+                }) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 20, weight: .semibold))
+                        
+                        Text("Match ✅")
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(Color.green)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+                
+                Button(action: {
+                    gameManager.checkAnswer(userThinksMatch: false)
+                }) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 20, weight: .semibold))
+                        
+                        Text("No Match ❌")
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+                    .background(Color.red)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 40)
         }
         .background(
             NavigationLink(
