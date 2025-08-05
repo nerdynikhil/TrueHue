@@ -116,7 +116,8 @@ struct ChronoModeView: View {
         }
         .background(
             NavigationLink(
-                destination: GameOverView(),
+                destination: GameOverView()
+                    .environmentObject(gameManager),
                 isActive: Binding(
                     get: { gameManager.gameState == .gameOver },
                     set: { _ in }
