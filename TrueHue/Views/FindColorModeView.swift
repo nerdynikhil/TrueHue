@@ -14,71 +14,105 @@ struct FindColorModeView: View {
     @State private var correctColorIndex: Int = 0
     
     var body: some View {
-        VStack(spacing: 40) {
-            // Header with Score
-            HStack {
-                Button(action: {
-                    gameManager.resetGame()
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-                
-                VStack(spacing: 4) {
-                    Text("Score")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundColor(.secondary)
+        ZStack {
+            // Liquid Glass Background
+            LiquidGlassBackground()
+            
+            VStack(spacing: 40) {
+                // Header with Score
+                HStack {
+                    Button(action: {
+                        gameManager.resetGame()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                                .frame(width: 44, height: 44)
+                                .blur(radius: 0.5)
+                            
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
                     
-                    Text("\(gameManager.currentScore)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.primary)
+                    Spacer()
+                    
+                    // Score Display with Liquid Glass
+                    VStack(spacing: 4) {
+                        Text("Score")
+                            .font(.system(size: 14, weight: .medium, design: .rounded))
+                            .foregroundStyle(.secondary)
+                        
+                        Text("\(gameManager.currentScore)")
+                            .font(.system(size: 36, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primary)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.ultraThinMaterial)
+                            .blur(radius: 0.5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(.quaternary, lineWidth: 0.5)
+                            )
+                    )
+                    
+                    Spacer()
+                    
+                    // Placeholder for balance
+                    Color.clear
+                        .frame(width: 44, height: 44)
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 20)
+                
+                Spacer()
+                
+                // Color Name Display with Liquid Glass
+                VStack(spacing: 24) {
+                    Text(gameManager.currentColorName)
+                        .font(.system(size: 52, weight: .bold, design: .rounded))
+                        .foregroundStyle(gameManager.currentDisplayColor)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 24)
+                                .fill(.ultraThinMaterial)
+                                .blur(radius: 0.5)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 24)
+                                        .stroke(.quaternary, lineWidth: 0.5)
+                                )
+                        )
                 }
                 
                 Spacer()
                 
-                // Placeholder for balance
-                Color.clear
-                    .frame(width: 24, height: 24)
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            
-            Spacer()
-            
-            // Color Name Display
-            VStack(spacing: 20) {
-                Text(gameManager.currentColorName)
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary) // Always neutral color for Find Color mode
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
-            }
-            
-            Spacer()
-            
-            // Color Grid
-            VStack(spacing: 16) {
-                ForEach(0..<2, id: \.self) { row in
-                    HStack(spacing: 16) {
-                        ForEach(0..<3, id: \.self) { column in
-                            let index = row * 3 + column
-                            ColorButton(
-                                color: colorOptions.indices.contains(index) ? colorOptions[index] : .gray,
-                                isCorrect: index == correctColorIndex
-                            ) {
-                                handleColorSelection(index: index)
+                // Color Grid with Liquid Glass
+                VStack(spacing: 16) {
+                    ForEach(0..<2, id: \.self) { row in
+                        HStack(spacing: 16) {
+                            ForEach(0..<3, id: \.self) { column in
+                                let index = row * 3 + column
+                                LiquidGlassColorButton(
+                                    color: colorOptions.indices.contains(index) ? colorOptions[index] : .gray,
+                                    isCorrect: index == correctColorIndex
+                                ) {
+                                    handleColorSelection(index: index)
+                                }
                             }
                         }
                     }
                 }
+                .padding(.horizontal, 24)
+                
+                Spacer()
             }
-            .padding(.horizontal, 20)
-            
-            Spacer()
         }
         .background(
             NavigationLink(
@@ -136,25 +170,6 @@ struct FindColorModeView: View {
             // Game over for Find Color mode
             gameManager.endGame()
         }
-    }
-}
-
-struct ColorButton: View {
-    let color: Color
-    let isCorrect: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(color)
-                .frame(height: 80)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color(.systemGray4), lineWidth: 2)
-                )
-        }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
