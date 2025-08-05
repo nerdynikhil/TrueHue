@@ -12,76 +12,83 @@ struct GameOverView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 0) {
             Spacer()
             
-            // Game Over Title
-            VStack(spacing: 16) {
-                Text("Game Over!")
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                
-                Text("Final Score: \(gameManager.currentScore)")
-                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                    .foregroundColor(.secondary)
-            }
-            
-            // High Score Celebration
-            if isNewHighScore {
-                VStack(spacing: 12) {
-                    Image(systemName: "trophy.fill")
-                        .font(.system(size: 48))
-                        .foregroundColor(.yellow)
+            // Game Over Content
+            VStack(spacing: 24) {
+                // Game Over Title
+                VStack(spacing: 8) {
+                    Text("Game Over!")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
                     
-                    Text("New High Score! 🎉")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundColor(.primary)
+                    Text("Final Score: \(gameManager.currentScore)")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
                 }
-                .padding(.vertical, 20)
+                
+                // High Score Celebration
+                if isNewHighScore {
+                    VStack(spacing: 12) {
+                        Image(systemName: "trophy.fill")
+                            .font(.system(size: 48))
+                            .foregroundStyle(.yellow)
+                        
+                        Text("New High Score! 🎉")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                    }
+                    .padding(.vertical, 20)
+                }
             }
             
             Spacer()
             
             // Action Buttons
-            VStack(spacing: 16) {
+            VStack(spacing: 12) {
                 Button(action: {
                     gameManager.resetGame()
-                    // Navigate back to root
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 8) {
                         Image(systemName: "house.fill")
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.system(size: 18, weight: .semibold))
                         
                         Text("Back to Menu")
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .font(.headline)
+                            .fontWeight(.semibold)
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(Color.blue)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(height: 50)
+                    .background(.blue, in: RoundedRectangle(cornerRadius: 12))
                 }
+                .buttonStyle(.plain)
                 
                 Button(action: {
                     gameManager.startGame(mode: gameManager.gameMode)
                 }) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 8) {
                         Image(systemName: "arrow.clockwise")
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.system(size: 18, weight: .semibold))
                         
                         Text("Play Again")
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .font(.headline)
+                            .fontWeight(.semibold)
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(height: 50)
+                    .background(.green, in: RoundedRectangle(cornerRadius: 12))
                 }
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 40)
+            .padding(.bottom, 32)
         }
         .navigationBarHidden(true)
     }

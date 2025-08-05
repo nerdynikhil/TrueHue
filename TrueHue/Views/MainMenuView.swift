@@ -12,79 +12,85 @@ struct MainMenuView: View {
     @State private var navigateToGame = false
     
     var body: some View {
-        VStack(spacing: 40) {
-            // App Title
-            VStack(spacing: 8) {
-                Text("TrueHue")
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                
-                Text("Color Matching Puzzle")
-                    .font(.system(size: 18, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 32) {
+                    // App Title Section
+                    VStack(spacing: 8) {
+                        Text("TrueHue")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                        
+                        Text("Color Matching Puzzle")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.top, 20)
+                    
+                    // Game Mode Buttons
+                    VStack(spacing: 12) {
+                        GameModeButton(
+                            title: "Classic Mode",
+                            subtitle: "Match colors until you make a mistake",
+                            icon: "gamecontroller.fill",
+                            color: .blue
+                        ) {
+                            gameManager.startGame(mode: .classic)
+                            navigateToGame = true
+                        }
+                        
+                        GameModeButton(
+                            title: "Chrono Mode",
+                            subtitle: "30 seconds to match as many as possible",
+                            icon: "timer",
+                            color: .orange
+                        ) {
+                            gameManager.startGame(mode: .chrono)
+                            navigateToGame = true
+                        }
+                        
+                        GameModeButton(
+                            title: "Find Color Mode",
+                            subtitle: "Tap the correct color from a grid",
+                            icon: "square.grid.3x3.fill",
+                            color: .green
+                        ) {
+                            gameManager.startGame(mode: .findColor)
+                            navigateToGame = true
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    
+                    // High Scores Section
+                    VStack(spacing: 16) {
+                        Text("High Scores")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.primary)
+                        
+                        HStack(spacing: 16) {
+                            HighScoreCard(mode: "Classic", score: gameManager.highScores[.classic] ?? 0)
+                            HighScoreCard(mode: "Chrono", score: gameManager.highScores[.chrono] ?? 0)
+                            HighScoreCard(mode: "Find", score: gameManager.highScores[.findColor] ?? 0)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                }
+                .padding(.bottom, 32)
             }
-            .padding(.top, 60)
-            
-            Spacer()
-            
-            // Game Mode Buttons
-            VStack(spacing: 20) {
-                GameModeButton(
-                    title: "Classic Mode",
-                    subtitle: "Match colors until you make a mistake",
-                    icon: "gamecontroller.fill",
-                    color: .blue
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(
+                NavigationLink(
+                    destination: destinationView,
+                    isActive: $navigateToGame
                 ) {
-                    gameManager.startGame(mode: .classic)
-                    navigateToGame = true
+                    EmptyView()
                 }
-                
-                GameModeButton(
-                    title: "Chrono Mode",
-                    subtitle: "30 seconds to match as many as possible",
-                    icon: "timer",
-                    color: .orange
-                ) {
-                    gameManager.startGame(mode: .chrono)
-                    navigateToGame = true
-                }
-                
-                GameModeButton(
-                    title: "Find Color Mode",
-                    subtitle: "Tap the correct color from a grid",
-                    icon: "square.grid.3x3.fill",
-                    color: .green
-                ) {
-                    gameManager.startGame(mode: .findColor)
-                    navigateToGame = true
-                }
-            }
-            .padding(.horizontal, 20)
-            
-            Spacer()
-            
-            // High Scores
-            VStack(spacing: 12) {
-                Text("High Scores")
-                    .font(.system(size: 20, weight: .semibold, design: .rounded))
-                    .foregroundColor(.primary)
-                
-                HStack(spacing: 30) {
-                    HighScoreCard(mode: "Classic", score: gameManager.highScores[.classic] ?? 0)
-                    HighScoreCard(mode: "Chrono", score: gameManager.highScores[.chrono] ?? 0)
-                    HighScoreCard(mode: "Find", score: gameManager.highScores[.findColor] ?? 0)
-                }
-            }
-            .padding(.bottom, 40)
+            )
         }
-        .background(
-            NavigationLink(
-                destination: destinationView,
-                isActive: $navigateToGame
-            ) {
-                EmptyView()
-            }
-        )
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     @ViewBuilder
@@ -113,35 +119,45 @@ struct GameModeButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 16) {
-                Image(systemName: icon)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(width: 50, height: 50)
-                    .background(color)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                // Icon Container
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(color)
+                        .frame(width: 44, height: 44)
+                    
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.white)
+                }
                 
-                VStack(alignment: .leading, spacing: 4) {
+                // Content
+                VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .foregroundColor(.primary)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
                     
                     Text(subtitle)
-                        .font(.system(size: 14, weight: .regular, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                         .multilineTextAlignment(.leading)
                 }
                 
                 Spacer()
                 
+                // Chevron
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.tertiary)
             }
-            .padding(20)
-            .background(Color(.systemGray6))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .padding(16)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(.quaternary, lineWidth: 0.5)
+            )
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
     }
 }
 
@@ -152,16 +168,22 @@ struct HighScoreCard: View {
     var body: some View {
         VStack(spacing: 4) {
             Text(mode)
-                .font(.system(size: 12, weight: .medium, design: .rounded))
-                .foregroundColor(.secondary)
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.secondary)
             
             Text("\(score)")
-                .font(.system(size: 24, weight: .bold, design: .rounded))
-                .foregroundColor(.primary)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(.primary)
         }
-        .frame(width: 80, height: 60)
-        .background(Color(.systemGray6))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(.quaternary, lineWidth: 0.5)
+        )
     }
 }
 

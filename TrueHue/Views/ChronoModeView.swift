@@ -12,7 +12,7 @@ struct ChronoModeView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 0) {
             // Header with Timer and Score
             HStack {
                 Button(action: {
@@ -20,99 +20,111 @@ struct ChronoModeView: View {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.secondary)
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
                 }
                 
                 Spacer()
                 
                 // Timer Display
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text("Time")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.secondary)
                     
                     Text("\(gameManager.timeRemaining)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(timerColor)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(timerColor)
                 }
                 
                 Spacer()
                 
                 // Score Display
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text("Score")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.secondary)
                     
                     Text("\(gameManager.currentScore)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.primary)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
                 }
             }
             .padding(.horizontal, 20)
-            .padding(.top, 20)
+            .padding(.top, 16)
+            .padding(.bottom, 32)
             
             Spacer()
             
-            // Color Name Display
-            VStack(spacing: 20) {
-                Text(gameManager.currentColorName)
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(gameManager.currentDisplayColor)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
-                
-                // Color Preview
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(gameManager.currentDisplayColor)
-                    .frame(width: 120, height: 120)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color(.systemGray4), lineWidth: 2)
-                    )
+            // Game Content
+            VStack(spacing: 32) {
+                // Color Name Display
+                VStack(spacing: 16) {
+                    Text(gameManager.currentColorName)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(gameManager.currentDisplayColor)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
+                    
+                    // Color Preview
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(gameManager.currentDisplayColor)
+                        .frame(width: 120, height: 120)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(.quaternary, lineWidth: 1)
+                        )
+                        .shadow(color: gameManager.currentDisplayColor.opacity(0.3), radius: 8, x: 0, y: 4)
+                }
             }
             
             Spacer()
             
             // Action Buttons
-            VStack(spacing: 16) {
+            VStack(spacing: 12) {
                 Button(action: {
                     gameManager.checkAnswer(userThinksMatch: true)
                 }) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 8) {
                         Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.system(size: 18, weight: .semibold))
                         
-                        Text("Match ✅")
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        Text("Match")
+                            .font(.headline)
+                            .fontWeight(.semibold)
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(height: 50)
+                    .background(.green, in: RoundedRectangle(cornerRadius: 12))
                 }
+                .buttonStyle(.plain)
                 
                 Button(action: {
                     gameManager.checkAnswer(userThinksMatch: false)
                 }) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 8) {
                         Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.system(size: 18, weight: .semibold))
                         
-                        Text("No Match ❌")
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        Text("No Match")
+                            .font(.headline)
+                            .fontWeight(.semibold)
                     }
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-                    .background(Color.red)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(height: 50)
+                    .background(.red, in: RoundedRectangle(cornerRadius: 12))
                 }
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 40)
+            .padding(.bottom, 32)
         }
         .background(
             NavigationLink(

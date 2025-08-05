@@ -14,7 +14,7 @@ struct FindColorModeView: View {
     @State private var correctColorIndex: Int = 0
     
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 0) {
             // Header with Score
             HStack {
                 Button(action: {
@@ -22,61 +22,66 @@ struct FindColorModeView: View {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 24))
-                        .foregroundColor(.secondary)
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
                 }
                 
                 Spacer()
                 
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text("Score")
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundColor(.secondary)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.secondary)
                     
                     Text("\(gameManager.currentScore)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.primary)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
                 }
                 
                 Spacer()
                 
-                // Placeholder for balance
+                // Balance placeholder
                 Color.clear
                     .frame(width: 24, height: 24)
             }
             .padding(.horizontal, 20)
-            .padding(.top, 20)
+            .padding(.top, 16)
+            .padding(.bottom, 32)
             
             Spacer()
             
-            // Color Name Display
-            VStack(spacing: 20) {
-                Text(gameManager.currentColorName)
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary) // Always neutral color for Find Color mode
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
-            }
-            
-            Spacer()
-            
-            // Color Grid
-            VStack(spacing: 16) {
-                ForEach(0..<2, id: \.self) { row in
-                    HStack(spacing: 16) {
-                        ForEach(0..<3, id: \.self) { column in
-                            let index = row * 3 + column
-                            ColorButton(
-                                color: colorOptions.indices.contains(index) ? colorOptions[index] : .gray,
-                                isCorrect: index == correctColorIndex
-                            ) {
-                                handleColorSelection(index: index)
+            // Game Content
+            VStack(spacing: 32) {
+                // Color Name Display
+                VStack(spacing: 16) {
+                    Text(gameManager.currentColorName)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
+                }
+                
+                // Color Grid
+                VStack(spacing: 16) {
+                    ForEach(0..<2, id: \.self) { row in
+                        HStack(spacing: 16) {
+                            ForEach(0..<3, id: \.self) { column in
+                                let index = row * 3 + column
+                                ColorButton(
+                                    color: colorOptions.indices.contains(index) ? colorOptions[index] : .gray,
+                                    isCorrect: index == correctColorIndex
+                                ) {
+                                    handleColorSelection(index: index)
+                                }
                             }
                         }
                     }
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
             
             Spacer()
         }
@@ -151,10 +156,11 @@ struct ColorButton: View {
                 .frame(height: 80)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color(.systemGray4), lineWidth: 2)
+                        .stroke(.quaternary, lineWidth: 1)
                 )
+                .shadow(color: color.opacity(0.3), radius: 4, x: 0, y: 2)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
     }
 }
 
