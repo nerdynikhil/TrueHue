@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MainMenuView: View {
-    @EnvironmentObject var gameManager: GameManager
+    @StateObject private var gameManager = GameManager()
+    @State private var navigateToGame = false
     
     var body: some View {
         VStack(spacing: 40) {
@@ -35,6 +36,7 @@ struct MainMenuView: View {
                     color: .blue
                 ) {
                     gameManager.startGame(mode: .classic)
+                    navigateToGame = true
                 }
                 
                 GameModeButton(
@@ -44,6 +46,7 @@ struct MainMenuView: View {
                     color: .orange
                 ) {
                     gameManager.startGame(mode: .chrono)
+                    navigateToGame = true
                 }
                 
                 GameModeButton(
@@ -53,6 +56,7 @@ struct MainMenuView: View {
                     color: .green
                 ) {
                     gameManager.startGame(mode: .findColor)
+                    navigateToGame = true
                 }
             }
             .padding(.horizontal, 20)
@@ -76,10 +80,7 @@ struct MainMenuView: View {
         .background(
             NavigationLink(
                 destination: destinationView,
-                isActive: Binding(
-                    get: { gameManager.gameState == .playing },
-                    set: { _ in }
-                )
+                isActive: $navigateToGame
             ) {
                 EmptyView()
             }
@@ -91,10 +92,13 @@ struct MainMenuView: View {
         switch gameManager.gameMode {
         case .classic:
             ClassicModeView()
+                .environmentObject(gameManager)
         case .chrono:
             ChronoModeView()
+                .environmentObject(gameManager)
         case .findColor:
             FindColorModeView()
+                .environmentObject(gameManager)
         }
     }
 }

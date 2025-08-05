@@ -8,12 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var gameManager = GameManager()
-    
     var body: some View {
         NavigationView {
             MainMenuView()
-                .environmentObject(gameManager)
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
