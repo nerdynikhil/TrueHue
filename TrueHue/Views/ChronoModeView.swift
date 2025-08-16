@@ -14,9 +14,7 @@ struct ChronoModeView: View {
         VStack(spacing: 0) {
             // Header with Timer and Score
             HStack {
-                Spacer()
-                
-                // Timer Display
+                // Timer Display - Left Half
                 VStack(spacing: 2) {
                     Text("Time")
                         .font(.caption)
@@ -28,10 +26,9 @@ struct ChronoModeView: View {
                         .fontWeight(.bold)
                         .foregroundStyle(timerColor)
                 }
+                .frame(maxWidth: .infinity)
                 
-                Spacer()
-                
-                // Score Display
+                // Score Display - Right Half
                 VStack(spacing: 2) {
                     Text("Score")
                         .font(.caption)
@@ -43,6 +40,7 @@ struct ChronoModeView: View {
                         .fontWeight(.bold)
                         .foregroundStyle(.primary)
                 }
+                .frame(maxWidth: .infinity)
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)
