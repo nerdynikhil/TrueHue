@@ -50,7 +50,7 @@ struct ClassicModeView: View {
                     // Color Preview
                     RoundedRectangle(cornerRadius: 20)
                         .fill(gameManager.currentDisplayColor)
-                        .frame(width: 120, height: 120)
+                        .frame(width: 160, height: 160)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20)
                                 .stroke(.quaternary, lineWidth: 1)
@@ -62,40 +62,28 @@ struct ClassicModeView: View {
             Spacer()
             
             // Action Buttons
-            VStack(spacing: 12) {
+            HStack(spacing: 20) {
                 Button(action: {
                     gameManager.checkAnswer(userThinksMatch: true)
                 }) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 18, weight: .semibold))
-                        
-                        Text("Match")
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(.green, in: RoundedRectangle(cornerRadius: 12))
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 48, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 120, height: 120)
+                        .background(.green, in: RoundedRectangle(cornerRadius: 30))
+                        .shadow(color: .green.opacity(0.3), radius: 12, x: 0, y: 6)
                 }
                 .buttonStyle(.plain)
                 
                 Button(action: {
                     gameManager.checkAnswer(userThinksMatch: false)
                 }) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 18, weight: .semibold))
-                        
-                        Text("No Match")
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(.red, in: RoundedRectangle(cornerRadius: 12))
+                    Image(systemName: "xmark")
+                        .font(.system(size: 48, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 120, height: 120)
+                        .background(.red, in: RoundedRectangle(cornerRadius: 30))
+                        .shadow(color: .red.opacity(0.3), radius: 12, x: 0, y: 6)
                 }
                 .buttonStyle(.plain)
             }
