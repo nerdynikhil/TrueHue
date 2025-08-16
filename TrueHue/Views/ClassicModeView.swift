@@ -9,21 +9,11 @@ import SwiftUI
 
 struct ClassicModeView: View {
     @EnvironmentObject var gameManager: GameManager
-    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack(spacing: 0) {
             // Header with Score
             HStack {
-                Button(action: {
-                    gameManager.resetGame()
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(.secondary)
-                }
-                
                 Spacer()
                 
                 VStack(spacing: 2) {
@@ -39,10 +29,6 @@ struct ClassicModeView: View {
                 }
                 
                 Spacer()
-                
-                // Balance placeholder
-                Color.clear
-                    .frame(width: 24, height: 24)
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)
@@ -128,7 +114,14 @@ struct ClassicModeView: View {
                 EmptyView()
             }
         )
-        .navigationBarHidden(true)
+        .navigationTitle("Classic Mode")
+        .navigationBarTitleDisplayMode(.inline)
+        .onDisappear {
+            // Reset game when leaving the view
+            if gameManager.gameState != .gameOver {
+                gameManager.resetGame()
+            }
+        }
     }
 }
 

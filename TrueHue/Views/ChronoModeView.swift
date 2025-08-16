@@ -9,21 +9,11 @@ import SwiftUI
 
 struct ChronoModeView: View {
     @EnvironmentObject var gameManager: GameManager
-    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack(spacing: 0) {
             // Header with Timer and Score
             HStack {
-                Button(action: {
-                    gameManager.resetGame()
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(.secondary)
-                }
-                
                 Spacer()
                 
                 // Timer Display
@@ -138,7 +128,14 @@ struct ChronoModeView: View {
                 EmptyView()
             }
         )
-        .navigationBarHidden(true)
+        .navigationTitle("Chrono Mode")
+        .navigationBarTitleDisplayMode(.inline)
+        .onDisappear {
+            // Reset game when leaving the view
+            if gameManager.gameState != .gameOver {
+                gameManager.resetGame()
+            }
+        }
     }
     
     private var timerColor: Color {
