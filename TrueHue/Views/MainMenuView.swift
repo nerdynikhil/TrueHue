@@ -37,6 +37,7 @@ struct MainMenuView: View {
                             icon: "gamecontroller.fill",
                             color: .blue
                         ) {
+                            HapticManager.shared.lightHaptic()
                             gameManager.startGame(mode: .classic)
                             navigateToGame = true
                         }
@@ -47,6 +48,7 @@ struct MainMenuView: View {
                             icon: "timer",
                             color: .orange
                         ) {
+                            HapticManager.shared.lightHaptic()
                             gameManager.startGame(mode: .chrono)
                             navigateToGame = true
                         }
@@ -57,6 +59,7 @@ struct MainMenuView: View {
                             icon: "square.grid.3x3.fill",
                             color: .green
                         ) {
+                            HapticManager.shared.lightHaptic()
                             gameManager.startGame(mode: .findColor)
                             navigateToGame = true
                         }

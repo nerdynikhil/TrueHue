@@ -12,6 +12,10 @@ struct TrueHueApp: App {
     var body: some Scene {
         WindowGroup {
             SplashView()
+                .onAppear {
+                    // Prepare haptics for better performance
+                    HapticManager.shared.prepareHaptics()
+                }
         }
     }
 }

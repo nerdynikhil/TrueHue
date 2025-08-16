@@ -92,6 +92,7 @@ struct FindColorModeView: View {
         .onDisappear {
             // Reset game when leaving the view
             if gameManager.gameState != .gameOver {
+                HapticManager.shared.softHaptic()
                 gameManager.resetGame()
             }
         }
@@ -126,11 +127,13 @@ struct FindColorModeView: View {
         let isCorrect = index == correctColorIndex
         
         if isCorrect {
+            HapticManager.shared.lightHaptic()
             gameManager.currentScore += 1
             // Generate new question
             gameManager.generateFindColorQuestion()
             generateColorOptions()
         } else {
+            HapticManager.shared.lightHaptic()
             // Game over for Find Color mode
             gameManager.endGame()
         }
@@ -143,7 +146,10 @@ struct ColorButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            HapticManager.shared.lightHaptic()
+            action()
+        }) {
             RoundedRectangle(cornerRadius: 16)
                 .fill(color)
                 .frame(height: 80)

@@ -51,6 +51,7 @@ struct GameOverView: View {
             // Action Buttons
             VStack(spacing: 12) {
                 Button(action: {
+                    HapticManager.shared.softHaptic()
                     gameManager.resetGame()
                     presentationMode.wrappedValue.dismiss()
                 }) {
@@ -70,6 +71,7 @@ struct GameOverView: View {
                 .buttonStyle(.plain)
                 
                 Button(action: {
+                    HapticManager.shared.lightHaptic()
                     gameManager.startGame(mode: gameManager.gameMode)
                 }) {
                     HStack(spacing: 8) {

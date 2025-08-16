@@ -71,6 +71,9 @@ class GameManager: ObservableObject {
         }
         
         generateNewQuestion()
+        
+        // Light haptic for game start
+        HapticManager.shared.lightHaptic()
     }
     
     func endGame() {
@@ -83,10 +86,14 @@ class GameManager: ObservableObject {
             if currentScore > currentHighScore {
                 highScores[gameMode] = currentScore
                 saveHighScores()
+                // Light haptic for new high score
+                HapticManager.shared.lightHaptic()
             }
         } else {
             highScores[gameMode] = currentScore
             saveHighScores()
+            // Light haptic for first high score
+            HapticManager.shared.lightHaptic()
         }
     }
     
@@ -96,6 +103,9 @@ class GameManager: ObservableObject {
         timeRemaining = 30
         timer?.invalidate()
         timer = nil
+        
+        // Soft haptic for game reset
+        HapticManager.shared.softHaptic()
     }
     
     // MARK: - Question Generation
@@ -116,6 +126,11 @@ class GameManager: ObservableObject {
         
         if correct {
             currentScore += 1
+            // Light haptic for correct answer
+            HapticManager.shared.lightHaptic()
+        } else {
+            // Light haptic for incorrect answer
+            HapticManager.shared.lightHaptic()
         }
         
         // For Classic Mode, end game on first mistake
@@ -144,6 +159,8 @@ class GameManager: ObservableObject {
             if self.timeRemaining > 0 {
                 self.timeRemaining -= 1
             } else {
+                // Light haptic when time runs out
+                HapticManager.shared.lightHaptic()
                 self.endGame()
             }
         }

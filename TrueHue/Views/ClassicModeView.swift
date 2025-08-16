@@ -64,6 +64,7 @@ struct ClassicModeView: View {
             // Action Buttons
             HStack(spacing: 20) {
                 Button(action: {
+                    HapticManager.shared.lightHaptic()
                     gameManager.checkAnswer(userThinksMatch: true)
                 }) {
                     Image(systemName: "checkmark")
@@ -76,6 +77,7 @@ struct ClassicModeView: View {
                 .buttonStyle(.plain)
                 
                 Button(action: {
+                    HapticManager.shared.lightHaptic()
                     gameManager.checkAnswer(userThinksMatch: false)
                 }) {
                     Image(systemName: "xmark")
@@ -107,6 +109,7 @@ struct ClassicModeView: View {
         .onDisappear {
             // Reset game when leaving the view
             if gameManager.gameState != .gameOver {
+                HapticManager.shared.softHaptic()
                 gameManager.resetGame()
             }
         }
