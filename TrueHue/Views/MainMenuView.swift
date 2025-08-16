@@ -13,7 +13,9 @@ struct MainMenuView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
+            VStack {
+                Spacer()
+                
                 VStack(spacing: 32) {
                     // App Title Section
                     VStack(spacing: 8) {
@@ -26,7 +28,6 @@ struct MainMenuView: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
-                    .padding(.top, 20)
                     
                     // Game Mode Buttons
                     VStack(spacing: 12) {
@@ -77,7 +78,8 @@ struct MainMenuView: View {
                     }
                     .padding(.horizontal, 16)
                 }
-                .padding(.bottom, 32)
+                
+                Spacer()
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
