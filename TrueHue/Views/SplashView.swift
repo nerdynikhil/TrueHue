@@ -10,11 +10,13 @@ import SwiftUI
 struct SplashView: View {
     @State private var isAnimating = false
     @State private var showMainMenu = false
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     
     var body: some View {
         Group {
             if showMainMenu {
                 ContentView()
+                    .environmentObject(gameCenterManager)
                     .transition(.opacity)
             } else {
                 ZStack {

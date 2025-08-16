@@ -74,7 +74,8 @@ struct FindColorModeView: View {
         .background(
             NavigationLink(
                 destination: GameOverView()
-                    .environmentObject(gameManager),
+                    .environmentObject(gameManager)
+                    .environmentObject(GameCenterManager.shared),
                 isActive: Binding(
                     get: { gameManager.gameState == .gameOver },
                     set: { _ in }
@@ -166,4 +167,5 @@ struct ColorButton: View {
 #Preview {
     FindColorModeView()
         .environmentObject(GameManager())
+        .environmentObject(GameCenterManager.shared)
 } 

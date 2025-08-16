@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AB24DC2D2E5082120054E53C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB24DC2C2E5082110054E53C /* GameKit.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		AB24DC2C2E5082110054E53C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		ABA100492E428407005A58DD /* TrueHue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrueHue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -23,16 +28,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB24DC2D2E5082120054E53C /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB24DC2B2E5082110054E53C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AB24DC2C2E5082110054E53C /* GameKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ABA100402E428407005A58DD = {
 			isa = PBXGroup;
 			children = (
 				ABA1004B2E428407005A58DD /* TrueHue */,
+				AB24DC2B2E5082110054E53C /* Frameworks */,
 				ABA1004A2E428407005A58DD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -252,6 +267,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = TrueHue;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = TrueHue/TrueHue.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z9J295B42J;
@@ -285,6 +301,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = TrueHue;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = TrueHue/TrueHue.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z9J295B42J;

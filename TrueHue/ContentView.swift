@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var gameCenterManager: GameCenterManager
+    
     var body: some View {
         MainMenuView()
+            .environmentObject(gameCenterManager)
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(GameCenterManager.shared)
 }

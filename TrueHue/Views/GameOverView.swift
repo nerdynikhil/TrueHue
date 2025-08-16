@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameOverView: View {
     @EnvironmentObject var gameManager: GameManager
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -41,6 +42,28 @@ struct GameOverView: View {
                             .font(.headline)
                             .fontWeight(.bold)
                             .foregroundStyle(.primary)
+                    }
+                    .padding(.vertical, 20)
+                }
+                
+                // Achievement Unlocks
+                if let newAchievements = getNewAchievements(), !newAchievements.isEmpty {
+                    VStack(spacing: 12) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 48))
+                            .foregroundStyle(.yellow)
+                        
+                        Text("Achievement Unlocked! ⭐")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                        
+                        ForEach(newAchievements, id: \.type) { achievement in
+                            Text(achievement.type.title)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     .padding(.vertical, 20)
                 }
@@ -101,9 +124,59 @@ struct GameOverView: View {
         }
         return gameManager.currentScore > currentHighScore
     }
+    
+    private func getNewAchievements() -> [Achievement]? {
+        // Check for newly unlocked achievements based on current score
+        let currentScore = gameManager.currentScore
+        let mode = gameManager.gameMode
+        
+        var newAchievements: [Achievement] = []
+        
+        // Check score-based achievements
+        if currentScore >= 10 {
+            if let achievement = gameCenterManager.achievements.first(where: { $0.type == .score10 && !$0.isUnlocked }) {
+                newAchievements.append(achievement)
+            }
+        }
+        if currentScore >= 25 {
+            if let achievement = gameCenterManager.achievements.first(where: { $0.type == .score25 && !$0.isUnlocked }) {
+                newAchievements.append(achievement)
+            }
+        }
+        if currentScore >= 50 {
+            if let achievement = gameCenterManager.achievements.first(where: { $0.type == .score50 && !$0.isUnlocked }) {
+                newAchievements.append(achievement)
+            }
+        }
+        
+        // Check mode-specific achievements
+        switch mode {
+        case .classic:
+            if currentScore >= 5 {
+                if let achievement = gameCenterManager.achievements.first(where: { $0.type == .classicMaster && !$0.isUnlocked }) {
+                    newAchievements.append(achievement)
+                }
+            }
+        case .chrono:
+            if currentScore >= 15 {
+                if let achievement = gameCenterManager.achievements.first(where: { $0.type == .chronoMaster && !$0.isUnlocked }) {
+                    newAchievements.append(achievement)
+                }
+            }
+        case .findColor:
+            if currentScore >= 20 {
+                if let achievement = gameCenterManager.achievements.first(where: { $0.type == .findColorMaster && !$0.isUnlocked }) {
+                    newAchievements.append(achievement)
+                }
+            }
+        }
+        
+        return newAchievements.isEmpty ? nil : newAchievements
+    }
 }
 
 #Preview {
     GameOverView()
         .environmentObject(GameManager())
+        .environmentObject(GameCenterManager.shared)
 } 

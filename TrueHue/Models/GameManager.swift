@@ -15,11 +15,6 @@ enum GameState {
     case gameOver
 }
 
-enum GameMode: String, Codable, CaseIterable {
-    case classic
-    case chrono
-    case findColor
-}
 
 class GameManager: ObservableObject {
     // MARK: - Published Properties
@@ -55,6 +50,9 @@ class GameManager: ObservableObject {
     // MARK: - High Scores
     @Published var highScores: [GameMode: Int] = [:]
     
+    // MARK: - Game Center Integration
+    private let gameCenterManager = GameCenterManager.shared
+    
     init() {
         loadHighScores()
     }
@@ -80,6 +78,9 @@ class GameManager: ObservableObject {
         gameState = .gameOver
         timer?.invalidate()
         timer = nil
+        
+        // Submit score to Game Center Manager
+        gameCenterManager.submitScore(currentScore, for: gameMode)
         
         // Check for high score
         if let currentHighScore = highScores[gameMode] {

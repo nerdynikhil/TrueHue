@@ -10,9 +10,11 @@ import SwiftUI
 struct MainMenuView: View {
     @StateObject private var gameManager = GameManager()
     @State private var navigateToGame = false
+    @State private var showingLeaderboards = false
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Spacer()
                 
@@ -80,22 +82,57 @@ struct MainMenuView: View {
                         }
                     }
                     .padding(.horizontal, 16)
+                    
+                    // Leaderboards Button
+                    Button(action: {
+                        HapticManager.shared.lightHaptic()
+                        showingLeaderboards = true
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "trophy.fill")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.yellow)
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("View Leaderboards")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.primary)
+                                
+                                Text("See top scores and achievements")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(.tertiary)
+                        }
+                        .padding(16)
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color(.quaternaryLabel), lineWidth: 0.5)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 16)
                 }
                 
                 Spacer()
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .background(
-                NavigationLink(
-                    destination: destinationView,
-                    isActive: $navigateToGame
-                ) {
-                    EmptyView()
-                }
-            )
+            .navigationDestination(isPresented: $navigateToGame) {
+                destinationView
+            }
+            .sheet(isPresented: $showingLeaderboards) {
+                LeaderboardView()
+                    .environmentObject(GameCenterManager.shared)
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     @ViewBuilder
@@ -159,7 +196,7 @@ struct GameModeButton: View {
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(.quaternary, lineWidth: 0.5)
+                    .stroke(Color(.quaternaryLabel), lineWidth: 0.5)
             )
         }
         .buttonStyle(.plain)
@@ -187,11 +224,12 @@ struct HighScoreCard: View {
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(.quaternary, lineWidth: 0.5)
+                .stroke(Color(.quaternaryLabel), lineWidth: 0.5)
         )
     }
 }
 
 #Preview {
     MainMenuView()
-} 
+        .environmentObject(GameCenterManager.shared)
+}
